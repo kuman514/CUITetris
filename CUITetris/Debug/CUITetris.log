@@ -1,0 +1,4 @@
+﻿  CUITetris.cpp
+D:\CodeForGithub\CUITetris\CUITetris\CUITetris.cpp(80,19): warning C4838: 'const int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
+D:\CodeForGithub\CUITetris\CUITetris\CUITetris.cpp(80,22): warning C4838: 'const int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
+  CUITetris.vcxproj -> D:\CodeForGithub\CUITetris\Debug\CUITetris.exe
