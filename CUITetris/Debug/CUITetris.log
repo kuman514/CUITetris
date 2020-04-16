@@ -1,5 +1,5 @@
 ﻿  CUITetris.cpp
-D:\CodeForGithub\CUITetris\CUITetris\CUITetris.cpp(90,15): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\CodeForGithub\CUITetris\CUITetris\CUITetris.cpp(107,19): warning C4838: 'const int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
-D:\CodeForGithub\CUITetris\CUITetris\CUITetris.cpp(107,22): warning C4838: 'const int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
+D:\CodeForGithub\CUITetris\CUITetris\CUITetris.cpp(89,15): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CodeForGithub\CUITetris\CUITetris\CUITetris.cpp(109,19): warning C4838: 'const int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
+D:\CodeForGithub\CUITetris\CUITetris\CUITetris.cpp(109,22): warning C4838: 'const int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
   CUITetris.vcxproj -> D:\CodeForGithub\CUITetris\Debug\CUITetris.exe

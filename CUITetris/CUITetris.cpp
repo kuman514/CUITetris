@@ -36,8 +36,7 @@ bool tetromino[19][4][4] = { {{1,0,0,0},{1,0,0,0},{1,0,0,0},{1,0,0,0}}, {{1,1,1,
                              {{1,0,0,0},{1,0,0,0},{1,1,0,0},{0,0,0,0}}, {{1,1,1,0},{1,0,0,0},{0,0,0,0},{0,0,0,0}}, {{1,1,0,0},{0,1,0,0},{0,1,0,0},{0,0,0,0}}, {{0,0,1,0},{1,1,1,0},{0,0,0,0},{0,0,0,0}},
                              {{0,1,0,0},{0,1,0,0},{1,1,0,0},{0,0,0,0}}, {{1,0,0,0},{1,1,1,0},{0,0,0,0},{0,0,0,0}}, {{1,1,0,0},{1,0,0,0},{1,0,0,0},{0,0,0,0}}, {{1,1,1,0},{0,0,1,0},{0,0,0,0},{0,0,0,0}} };
 
-// [start, end)
-int tetIndex[7][2] = { {0, 2}, {2, 3}, {3, 5}, {5, 7}, {7, 11}, {11, 15}, {15, 19} };
+int tetIndex[7][4] = { {0, 1, 0, 1}, {2, 2, 2, 2}, {3, 4, 3, 4}, {5, 6, 5, 6}, {7, 8, 9, 10}, {11, 12, 13, 14}, {15, 16, 17, 18} };
 const int maxY = 20, maxX = 10;
 bool bricks[maxY + 4][maxX + 4];
 
@@ -97,7 +96,10 @@ void init(void)
     {
         for (int x = 0; x < 4; x++)
         {
-            bricks[line + y][xpos + x] = tetromino[tetIndex[curblock][curturn]][y][x];
+            if (tetromino[tetIndex[curblock][curturn]][y][x])
+            {
+                bricks[line + y][xpos + x] = tetromino[tetIndex[curblock][0]][y][x];
+            }
         }
     }
 }
@@ -167,8 +169,41 @@ void fall(void)
 
 void land(void)
 {
-    //line = 0;
-    //xpos = 3;
+    bool flag = false;
+
+    for (int y = 0; y < 4; y++)
+    {
+        for (int x = 0; x < 4; x++)
+        {
+            if (y < 3 && tetromino[tetIndex[curblock][curturn]][y + 1][x])
+            {
+                continue;
+            }
+
+            if (tetromino[tetIndex[curblock][curturn]][y][x])
+            {
+                if (bricks[line + y + 1][xpos + x] || line + y + 1 >= maxY)
+                {
+                    flag = true;
+                }
+            }
+
+            if (flag)
+            {
+                break;
+            }
+        }
+
+        if (flag)
+        {
+            break;
+        }
+    }
+
+    if (flag)
+    {
+        init();
+    }
 }
 
 void rotate(void)
