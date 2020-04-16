@@ -54,10 +54,14 @@ void invalidate(void);
 
 void fall(void);
 void land(void);
-void rotate(void);
-void move(void);
+int erase(void);
+
+void rotate(const int);
+void drop(const int);
+void move(const int);
 
 void countframe(void);
+void resetframe(void);
 
 int main(void)
 {
@@ -70,13 +74,19 @@ int main(void)
         land();
 
         // input
-        rotate();
-        move();
+        if (_kbhit())
+        {
+            const int input = _getch();
+
+            rotate(input);
+            drop(input);
+            move(input);
+        }
 
         // paint
         invalidate();
 
-        // 60 FPS
+        // approximately 60 FPS
         Sleep(16);
         countframe();
     }
@@ -149,7 +159,7 @@ void fall(void)
         }
 
         line++;
-        frame = 0;
+        resetframe();
     }
     else
     {
@@ -206,23 +216,121 @@ void land(void)
 
     if (flag)
     {
+        erase();
         init();
     }
 }
 
-void rotate(void)
+int erase(void)
 {
+    int result = 0;
 
-}
-
-void move(void)
-{
-    if (!_kbhit())
+    // erase lines
+    for (int y = 0; y < maxY; y++)
     {
-        return;
+        int tiles = 0;
+
+        for (int x = 0; x < maxX; x++)
+        {
+            tiles += (int)bricks[y][x];
+        }
+
+        if (tiles >= maxX)
+        {
+            result++;
+
+            // pull all above
+            for (int i = y; i > 0; i--)
+            {
+                for (int j = 0; j < maxX; j++)
+                {
+                    bricks[i][j] = bricks[i - 1][j];
+                }
+            }
+
+            for (int j = 0; j < maxX; j++)
+            {
+                bricks[0][j] = 0;
+            }
+        }
     }
 
-    int input = _getch();
+    return result;
+}
+
+void rotate(const int input)
+{
+    if (input == 'w')
+    {
+        int tmpturn = (curturn + 1) % 4;
+        bool turnable = true;
+
+        // check rotatable
+
+        
+        if (turnable)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                for (int x = 0; x < 4; x++)
+                {
+                    if (tetromino[tetIndex[curblock][curturn]][y][x])
+                    {
+                        bricks[line + y][xpos + x] = 0;
+                    }
+                }
+            }
+
+            curturn = tmpturn;
+
+            for (int y = 0; y < 4; y++)
+            {
+                for (int x = 0; x < 4; x++)
+                {
+                    if (tetromino[tetIndex[curblock][curturn]][y][x])
+                    {
+                        bricks[line + y][xpos + x] = 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void drop(const int input)
+{
+    if (input == 's')
+    {
+        for (int y = 0; y < 4; y++)
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                if (tetromino[tetIndex[curblock][curturn]][y][x])
+                {
+                    bricks[line + y][xpos + x] = 0;
+                }
+            }
+        }
+
+        line++;
+        resetframe();
+
+        for (int y = 0; y < 4; y++)
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                if (tetromino[tetIndex[curblock][curturn]][y][x])
+                {
+                    //bricks[line + y][xpos + x] = tetromino[tetIndex[curblock][curturn]][y][x];
+                    bricks[line + y][xpos + x] = 1;
+                }
+            }
+        }
+    }
+}
+
+void move(const int input)
+{
     bool moveable = true;
 
     switch (input)
@@ -353,9 +461,9 @@ void move(void)
 void countframe(void)
 {
     frame++;
+}
 
-    if (frame >= 60)
-    {
-        frame = 0;
-    }
+void resetframe(void)
+{
+    frame = 0;
 }
