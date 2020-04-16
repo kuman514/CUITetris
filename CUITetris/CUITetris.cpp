@@ -48,6 +48,8 @@ int xpos;
 int curblock;
 int curturn;
 
+bool isgameover;
+
 void init(void);
 void gotoxy(const int, const int);
 void invalidate(void);
@@ -67,7 +69,7 @@ int main(void)
 {
     init();
 
-    while (true)
+    while (!isgameover)
     {
         // process
         fall();
@@ -108,6 +110,13 @@ void init(void)
         {
             if (tetromino[tetIndex[curblock][curturn]][y][x])
             {
+                // if already blocked, game over
+                if (bricks[line + y][xpos + x])
+                {
+                    // game over
+                    isgameover = true;
+                }
+
                 bricks[line + y][xpos + x] = 1;
             }
         }
@@ -140,6 +149,12 @@ void invalidate(void)
     for (int x = 0; x < maxX + 2; x++)
     {
         printf("▣");
+    }
+
+    if (isgameover)
+    {
+        gotoxy(0, 23);
+        printf("GAME OVER");
     }
 }
 
@@ -265,8 +280,49 @@ void rotate(const int input)
         int tmpturn = (curturn + 1) % 4;
         bool turnable = true;
 
-        // check rotatable
+        // counting columns to shift to left
+        int shifttoleft = 0;
+        for (int y = 0; y < 4; y++)
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                if (tetromino[tetIndex[curblock][tmpturn]][y][x])
+                {
+                    if (bricks[line + y][xpos + x] || xpos + x >= maxX)
+                    {
+                        if (shifttoleft < 4 - x)
+                        {
+                            shifttoleft = 4 - x;
+                        }
+                    }
+                }
+            }
+        }
 
+        int tmpxpos = xpos - shifttoleft;
+        for (int y = 0; y < 4; y++)
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                if (tetromino[tetIndex[curblock][tmpturn]][y][x])
+                {
+                    if (bricks[line + y][tmpxpos + x] || tmpxpos + x >= maxX)
+                    {
+                        turnable = false;
+                    }
+                }
+
+                if (!turnable)
+                {
+                    break;
+                }
+            }
+
+            if (!turnable)
+            {
+                break;
+            }
+        }
         
         if (turnable)
         {
@@ -282,6 +338,7 @@ void rotate(const int input)
             }
 
             curturn = tmpturn;
+            xpos = tmpxpos;
 
             for (int y = 0; y < 4; y++)
             {
@@ -321,7 +378,6 @@ void drop(const int input)
             {
                 if (tetromino[tetIndex[curblock][curturn]][y][x])
                 {
-                    //bricks[line + y][xpos + x] = tetromino[tetIndex[curblock][curturn]][y][x];
                     bricks[line + y][xpos + x] = 1;
                 }
             }
