@@ -160,7 +160,7 @@ void invalidate(void)
 
 void fall(void)
 {
-    if (frame >= 30)
+    if (frame >= 60)
     {
         for (int y = 0; y < 4; y++)
         {
@@ -290,6 +290,7 @@ void rotate(const int input)
         }
 
         int tmpturn = (curturn + 1) % 4;
+        int shiftlimit = (curblock == 0) ? 4 : 3;
         bool turnable = true;
 
         // counting columns to shift to left
@@ -302,9 +303,9 @@ void rotate(const int input)
                 {
                     if (bricks[line + y][xpos + x] || xpos + x >= maxX)
                     {
-                        if (shifttoleft < 4 - x)
+                        if (shifttoleft < shiftlimit - x)
                         {
-                            shifttoleft = 4 - x;
+                            shifttoleft = shiftlimit - x;
                         }
                     }
                 }
