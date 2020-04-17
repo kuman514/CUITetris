@@ -277,6 +277,18 @@ void rotate(const int input)
 {
     if (input == 'w')
     {
+        // erase the current brick first
+        for (int y = 0; y < 4; y++)
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                if (tetromino[tetIndex[curblock][curturn]][y][x])
+                {
+                    bricks[line + y][xpos + x] = 0;
+                }
+            }
+        }
+
         int tmpturn = (curturn + 1) % 4;
         bool turnable = true;
 
@@ -299,6 +311,7 @@ void rotate(const int input)
             }
         }
 
+        // shift and check again
         int tmpxpos = xpos - shifttoleft;
         for (int y = 0; y < 4; y++)
         {
@@ -326,28 +339,18 @@ void rotate(const int input)
         
         if (turnable)
         {
-            for (int y = 0; y < 4; y++)
-            {
-                for (int x = 0; x < 4; x++)
-                {
-                    if (tetromino[tetIndex[curblock][curturn]][y][x])
-                    {
-                        bricks[line + y][xpos + x] = 0;
-                    }
-                }
-            }
-
             curturn = tmpturn;
             xpos = tmpxpos;
+        }
 
-            for (int y = 0; y < 4; y++)
+        // draw bricks back
+        for (int y = 0; y < 4; y++)
+        {
+            for (int x = 0; x < 4; x++)
             {
-                for (int x = 0; x < 4; x++)
+                if (tetromino[tetIndex[curblock][curturn]][y][x])
                 {
-                    if (tetromino[tetIndex[curblock][curturn]][y][x])
-                    {
-                        bricks[line + y][xpos + x] = 1;
-                    }
+                    bricks[line + y][xpos + x] = 1;
                 }
             }
         }
