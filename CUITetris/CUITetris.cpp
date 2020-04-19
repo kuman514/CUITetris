@@ -27,6 +27,8 @@
 0000 0000 0000 0000 0000 0000 0000
 */
 
+int score;
+
 // 0: I, 1: O, 2: S, 3: Z, 4: T, 5: L, 6: 7
 bool tetromino[19][4][4] = { {{1,0,0,0},{1,0,0,0},{1,0,0,0},{1,0,0,0}}, {{1,1,1,1},{0,0,0,0},{0,0,0,0},{0,0,0,0}},
                              {{1,1,0,0},{1,1,0,0},{0,0,0,0},{0,0,0,0}},
@@ -55,7 +57,7 @@ void gotoxy(const int, const int);
 void invalidate(void);
 
 void fall(void);
-void land(void);
+int land(void);
 int erase(void);
 
 void rotate(const int);
@@ -73,7 +75,7 @@ int main(void)
     {
         // process
         fall();
-        land();
+        score += land();
 
         // input
         if (_kbhit())
@@ -151,6 +153,9 @@ void invalidate(void)
         printf("▣");
     }
 
+    gotoxy(0, 21);
+    printf("SCORE: %d\n", score);
+
     if (isgameover)
     {
         gotoxy(0, 23);
@@ -194,8 +199,9 @@ void fall(void)
     }
 }
 
-void land(void)
+int land(void)
 {
+    int fallpoints = 0;
     bool flag = false;
 
     for (int y = 0; y < 4; y++)
@@ -231,9 +237,22 @@ void land(void)
 
     if (flag)
     {
-        erase();
+        fallpoints += (3 * (maxY - line));
+        switch (erase())
+        {
+        case 4:
+            fallpoints += 400;
+        case 3:
+            fallpoints += 300;
+        case 2:
+            fallpoints += 200;
+        case 1:
+            fallpoints += 100;
+        }
         init();
     }
+
+    return fallpoints;
 }
 
 int erase(void)
