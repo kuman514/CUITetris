@@ -406,6 +406,69 @@ void drop(const int input)
             }
         }
     }
+    else if (input == ' ')
+    {
+        for (int y = 0; y < 4; y++)
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                if (tetromino[tetIndex[curblock][curturn]][y][x])
+                {
+                    bricks[line + y][xpos + x] = 0;
+                }
+            }
+        }
+
+        bool landed = false;
+        while (!landed)
+        {
+            line++;
+
+            for (int y = 0; y < 4; y++)
+            {
+                for (int x = 0; x < 4; x++)
+                {
+                    if (tetromino[tetIndex[curblock][curturn]][y][x])
+                    {
+                        if (bricks[line + y + 1][xpos + x] || line + y + 1 >= maxY)
+                        {
+                            landed = true;
+                        }
+                    }
+
+                    if (landed)
+                    {
+                        break;
+                    }
+                }
+
+                if (landed)
+                {
+                    break;
+                }
+            }
+
+            if (landed)
+            {
+                break;
+            }
+        }
+
+        resetframe();
+
+        for (int y = 0; y < 4; y++)
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                if (tetromino[tetIndex[curblock][curturn]][y][x])
+                {
+                    bricks[line + y][xpos + x] = 1;
+                }
+            }
+        }
+
+        score += land();
+    }
 }
 
 void move(const int input)
