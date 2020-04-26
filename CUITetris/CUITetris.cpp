@@ -204,9 +204,9 @@ int land(void)
     int fallpoints = 0;
     bool flag = false;
 
-    for (int y = 0; y < 4; y++)
+    for (int y = 0; y < 4 && !flag; y++)
     {
-        for (int x = 0; x < 4; x++)
+        for (int x = 0; x < 4 && !flag; x++)
         {
             if (y < 3 && tetromino[tetIndex[curblock][curturn]][y + 1][x])
             {
@@ -222,16 +222,6 @@ int land(void)
                     flag = true;
                 }
             }
-
-            if (flag)
-            {
-                break;
-            }
-        }
-
-        if (flag)
-        {
-            break;
         }
     }
 
@@ -333,9 +323,9 @@ void rotate(const int input)
 
         // shift and check again
         int tmpxpos = xpos - shifttoleft;
-        for (int y = 0; y < 4; y++)
+        for (int y = 0; y < 4 && turnable; y++)
         {
-            for (int x = 0; x < 4; x++)
+            for (int x = 0; x < 4 && turnable; x++)
             {
                 if (tetromino[tetIndex[curblock][tmpturn]][y][x])
                 {
@@ -344,16 +334,6 @@ void rotate(const int input)
                         turnable = false;
                     }
                 }
-
-                if (!turnable)
-                {
-                    break;
-                }
-            }
-
-            if (!turnable)
-            {
-                break;
             }
         }
         
@@ -424,9 +404,9 @@ void drop(const int input)
         {
             line++;
 
-            for (int y = 0; y < 4; y++)
+            for (int y = 0; y < 4 && !landed; y++)
             {
-                for (int x = 0; x < 4; x++)
+                for (int x = 0; x < 4 && !landed; x++)
                 {
                     if (tetromino[tetIndex[curblock][curturn]][y][x])
                     {
@@ -435,22 +415,7 @@ void drop(const int input)
                             landed = true;
                         }
                     }
-
-                    if (landed)
-                    {
-                        break;
-                    }
                 }
-
-                if (landed)
-                {
-                    break;
-                }
-            }
-
-            if (landed)
-            {
-                break;
             }
         }
 
@@ -479,9 +444,9 @@ void move(const int input)
     {
     case 'a':
         // move left
-        for (int y = 0; y < 4; y++)
+        for (int y = 0; y < 4 && moveable; y++)
         {
-            for (int x = 0; x < 4; x++)
+            for (int x = 0; x < 4 && moveable; x++)
             {
                 if (x > 0 && tetromino[tetIndex[curblock][curturn]][y][x - 1])
                 {
@@ -496,16 +461,6 @@ void move(const int input)
                         moveable = false;
                     }
                 }
-
-                if (!moveable)
-                {
-                    break;
-                }
-            }
-
-            if (!moveable)
-            {
-                break;
             }
         }
 
@@ -539,9 +494,9 @@ void move(const int input)
 
     case 'd':
         // move right
-        for (int y = 0; y < 4; y++)
+        for (int y = 0; y < 4 && moveable; y++)
         {
-            for (int x = 0; x < 4; x++)
+            for (int x = 0; x < 4 && moveable; x++)
             {
                 if (x < 3 && tetromino[tetIndex[curblock][curturn]][y][x + 1])
                 {
@@ -556,16 +511,6 @@ void move(const int input)
                         moveable = false;
                     }
                 }
-
-                if (!moveable)
-                {
-                    break;
-                }
-            }
-
-            if (!moveable)
-            {
-                break;
             }
         }
 
