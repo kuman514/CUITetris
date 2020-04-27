@@ -52,6 +52,8 @@ int curturn;
 
 bool isgameover;
 
+void reset(void);
+
 void init(void);
 void gotoxy(const int, const int);
 void invalidate(void);
@@ -93,9 +95,39 @@ int main(void)
         // approximately 60 FPS
         Sleep(16);
         countframe();
+
+        while (isgameover)
+        {
+            const int input = _getch();
+
+            if (input == 'r')
+            {
+                reset();
+            }
+            else if(input == 'q')
+            {
+                break;
+            }
+        }
     }
 
     return 0;
+}
+
+void reset(void)
+{
+    for (int y = 0; y < maxY; y++)
+    {
+        for (int x = 0; x < maxX; x++)
+        {
+            bricks[y][x] = 0;
+        }
+    }
+
+    isgameover = false;
+
+    resetframe();
+    init();
 }
 
 void init(void)
