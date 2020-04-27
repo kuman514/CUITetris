@@ -193,6 +193,11 @@ void invalidate(void)
         gotoxy(0, 23);
         printf("GAME OVER");
     }
+    else
+    {
+        gotoxy(0, 23);
+        printf("          ");
+    }
 }
 
 void fall(void)
