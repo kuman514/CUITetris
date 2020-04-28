@@ -4,6 +4,8 @@
 #include <ctime>
 #include <conio.h>
 #include <Windows.h>
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 
 /*
 1000 1100 1000 0100 0100 1000 0100
@@ -68,6 +70,10 @@ void move(const int);
 
 void countframe(void);
 void resetframe(void);
+
+void playmovesound(void);
+
+const char* movesound = "move.wav";
 
 int main(void)
 {
@@ -376,6 +382,7 @@ void rotate(const int input)
         
         if (turnable)
         {
+            playmovesound();
             curturn = tmpturn;
             xpos = tmpxpos;
         }
@@ -526,6 +533,8 @@ void move(const int input)
                     }
                 }
             }
+
+            playmovesound();
         }
         break;
 
@@ -576,6 +585,8 @@ void move(const int input)
                     }
                 }
             }
+
+            playmovesound();
         }
 
         break;
@@ -590,4 +601,9 @@ void countframe(void)
 void resetframe(void)
 {
     frame = 0;
+}
+
+void playmovesound(void)
+{
+    PlaySound(TEXT("move.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
